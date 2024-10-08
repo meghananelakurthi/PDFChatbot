@@ -1,0 +1,366 @@
+<!-- 
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>PDF QA Chatbot</title>
+</head>
+<style>
+    body {
+    font-family: Arial, sans-serif;
+    background-color: #f8f9fa;
+    margin: 0;
+    padding: 20px;
+}
+
+.container {
+    max-width: 800px;
+    margin: auto;
+    background: white;
+    padding: 20px;
+    border-radius: 5px;
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+}
+
+h1 {
+    text-align: center;
+    color: #333;
+}
+
+.alert {
+    background-color: #d1ecf1;
+    color: #0c5460;
+    padding: 15px;
+    margin-bottom: 20px;
+    border: 1px solid #bee5eb;
+    border-radius: 5px;
+}
+
+form {
+    margin-bottom: 20px;
+}
+
+label {
+    display: block;
+    margin-bottom: 5px;
+    font-weight: bold;
+}
+
+input[type="file"],
+input[type="text"] {
+    width: 95%;
+    padding: 10px;
+    margin-bottom: 10px;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+}
+
+input[type="submit"] {
+    background-color: #007bff;
+    color: white;
+    border: none;
+    padding: 10px 15px;
+    border-radius: 4px;
+    cursor: pointer;
+    width: 100%;
+}
+
+input[type="submit"]:hover {
+    background-color: #0056b3;
+}
+
+hr {
+    margin: 20px 0;
+}
+
+h2 {
+    color: #333;
+}
+
+ul {
+    list-style-type: none;
+    padding: 0;
+}
+
+li {
+    margin-bottom: 10px;
+    padding: 10px;
+    background-color: #f1f1f1;
+    border-radius: 4px;
+    border: 1px solid #ccc; /* Light border color */
+}
+
+</style>
+<body>
+    <div class="container">
+        <h1>PDF QA Chatbot</h1>
+        
+        {% if response %}
+            <div class="alert alert-info">{{ response }}</div>
+        {% endif %}
+        
+        <form method="POST" enctype="multipart/form-data">
+            {% csrf_token %}
+            <div>
+                <label for="pdf_file">Upload PDF:</label>
+                <input type="file" name="pdf_file" accept=".pdf">
+            </div>
+            <div>
+                <input type="submit" value="Upload PDF">
+            </div>
+        </form>
+        
+        <hr>
+
+        <form method="POST">
+            {% csrf_token %}
+            <div>
+                <label for="question">Ask a question:</label>
+                <input type="text" name="question" required>
+            </div>
+            <div>
+                <input type="submit" value="Ask">
+            </div>
+        </form>
+
+        <hr>
+
+        <h2>Conversation</h2>
+        <ul>
+            {% for entry in conversation %}
+                <li><strong>Q:</strong> {{ entry.question }} <br>
+                    <strong>A:</strong> {{ entry.response }}</li>
+            {% endfor %}
+        </ul>
+    </div>
+</body>
+</html>
+ -->
+
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>PDF QA Chatbot</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.6.0/css/all.min.css">
+</head>
+<style>
+    body {
+        font-family: 'Arial', sans-serif;
+        background-color: #f0f2f5;
+        margin: 0px;
+        padding: 20px;
+        background-color: #bee5eb;
+    }
+
+    .container {
+        max-width: 1200px;
+        margin: auto;
+        display: flex;
+        justify-content: space-between;
+    }
+
+    .left-column {
+        width: 400px; 
+        background: white;
+        padding: 20px; 
+        border-radius: 10px;
+        box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
+        height: 350px; 
+        min-width: 350px;
+    }
+
+    .right-column {
+        flex-grow: 1; 
+        background: white;
+        padding: 20px;
+        border-radius: 10px;
+        box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
+        margin-left: 20px; 
+        max-height: 500px; 
+        display: flex;
+        flex-direction: column;
+    }
+
+    .input-section {
+        position: sticky;
+        top: 0; /* Stick to the top of the right column */
+        background: white; /* Ensure the background is white */
+        z-index: 10; /* Ensure it stays above other content */
+        padding: 20px 0; /* Some padding for spacing */
+    }
+
+    h1 {
+        text-align: center;
+        color: #333;
+        margin-bottom: 15px; 
+        width: 100%;
+        font-size: 1.5em; 
+    }
+
+    .alert {
+        background-color: #d1ecf1;
+        color: #0c5460;
+        padding: 15px;
+        margin-bottom: 15px; 
+        border: 1px solid #bee5eb;
+        border-radius: 5px;
+        display: flex;
+        align-items: center;
+    }
+
+    .alert i {
+        margin-right: 10px;
+    }
+
+    form {
+        margin-bottom: 15px; 
+    }
+
+    label {
+        display: block;
+        margin-bottom: 5px;
+        font-weight: bold;
+        text-align: left;
+    }
+
+    input[type="file"] {
+        width: 95%; 
+        padding: 10px; 
+        margin-bottom: 10px; 
+        border: 1px solid #ccc;
+        border-radius: 5px;
+        transition: border-color 0.3s;
+    }
+
+    input[type="file"]:focus {
+        outline: none;
+    }
+
+    .input-container {
+        display: flex;
+        width: 100%;
+    }
+
+    input[type="text"] {
+        flex-grow: 1; /* Take up remaining space */
+        padding: 10px 15px;
+        border: 1px solid #ccc;
+        border-radius: 5px 0 0 5px; /* Rounded corners on the left */
+        background-color: white; /* White background for the input */
+        color: #333; /* Text color */
+    }
+
+    input[type="text"]:focus {
+        /* border-color: #007bff; */
+        outline: none;
+    }
+
+    .send-button {
+        background-color: skyblue; /* Background color for the button */
+        border: none;
+        cursor: pointer;
+        font-size: 20px;
+        color: white; /* White arrow color */
+        padding: 10px 15px; /* Padding for button */
+        border-radius: 0 5px 5px 0; /* Rounded corners on the right */
+    }
+
+    /* Style for the Upload PDF button */
+    .upload-button {
+        background-color: skyblue; /* Sky blue background */
+        color: white; /* White text */
+        border: none;
+        padding: 10px;
+        border-radius: 5px;
+        cursor: pointer;
+        width: 100%; /* Full width */
+        font-size: 16px;
+        transition: background-color 0.3s, transform 0.2s;
+    }
+
+    .upload-button:hover {
+        background-color:#bee5eb ; /* Darker shade on hover */
+    }
+
+    h2 {
+        color: #333;
+        margin-bottom: 10px;
+        text-align: center;
+    }
+
+    .conversation-container {
+        background: #f8f9fa;
+        padding: 15px;
+        border-radius: 5px;
+        box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+        margin-top: 20px;
+        flex-grow: 1; /* Allow this to grow */
+        overflow-y: auto; /* Enable scrolling */
+    }
+
+    .entry {
+        margin-bottom: 15px;
+        padding: 10px;
+        border: 1px solid #ccc;
+        border-radius: 5px;
+        background-color: #ffffff; 
+    }
+
+    strong {
+        color: #202021; 
+    }
+</style>
+<body>
+    
+    <div class="container">
+        <div class="left-column">
+            
+            <h1>PDF Chat Genie <i class="fas fa-file-pdf"></i></h1>
+            {% if response %}
+                <div class="alert alert-info">{{ response }}</div>
+            {% endif %}
+            
+            <form method="POST" enctype="multipart/form-data">
+                {% csrf_token %}
+                <label for="pdf_file" style="margin: 20px;"><center>Select PDF</center></label>
+                <input type="file" name="pdf_file" accept=".pdf">
+                <input type="submit" value="Upload PDF" class="upload-button"> <!-- Styled button -->
+            </form>
+        </div>
+
+        <div class="right-column">
+            <h2>Ask a Question</h2>
+            <div class="input-section">
+                <form method="POST">
+                    {% csrf_token %}
+                    <div class="input-container">
+                        <input type="text" name="question" placeholder="Message BOT" required>
+                        <button type="submit" class="send-button">
+                            <i class="fas fa-paper-plane"></i>
+                        </button>
+                    </div>
+                </form>
+            </div>
+
+            <div class="conversation-container">
+                <h2>Converse Here</h2>
+                {% if previous_conversation %}
+                    {% for entry in previous_conversation %}
+                        <div class="entry">
+                            <strong>User:</strong> {{ entry.question }} <br>
+                            <strong>Bot:</strong> {{ entry.answer }}
+                        </div>
+                    {% endfor %}
+                {% else %}
+                    <p>No interactions yet.</p>
+                {% endif %}
+            </div>
+        </div>
+    </div>
+</body>
+</html>
