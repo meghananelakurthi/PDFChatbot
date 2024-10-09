@@ -66,9 +66,18 @@ CONTRIBUTION:
 4. Push to the branch: `git push origin feature-branch`
 5. Create a Pull Request
 
-RESOURCES:
-1.Youtube:
-Know about AI Model---->https://www.youtube.com/watch?v=xP_ZON_P4Ks&list=PLeo1K3hjS3uuyHkzjBfd3nwD7SJ5C11aB
-Know about Langchain---->https://www.youtube.com/watch?v=aywZrzNaKjs&t=700s
-Deploying---->https://www.youtube.com/watch?v=uiPSnrE6uWE
-2.Google
+1. YouTube Videos
+Know About AI Models
+Learn the fundamentals of AI models:
+https://www.youtube.com/watch?v=xP_ZON_P4Ks&list=PLeo1K3hjS3uuyHkzjBfd3nwD7SJ5C11aB
+
+Know About Langchain
+Gain insights into the Langchain framework:
+https://www.youtube.com/watch?v=aywZrzNaKjs&t=700s
+
+Deploying
+Understand how to deploy your applications:
+https://www.youtube.com/watch?v=uiPSnrE6uWE
+
+2. Google
+Explore Google’s resources and documentation on relevant technologies to deepen our knowledge and skills.
